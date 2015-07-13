@@ -1,0 +1,15 @@
+<h2><%=@list.category%></h2>
+<ol>
+<% @tasks.each do |task|%>
+  <li><%=task.name%></li>
+<%end%>
+</ol>
+
+<h4> Create a New Task </h4>
+
+<%= form_for @task do |f|%>
+  <%= f.hidden_field :list_id, value: "#{@id}" %>
+  <%=f.label "name" %>
+  <%=f.text_field :name %>
+  <%=f.submit "Create" %>
+<% end %>
