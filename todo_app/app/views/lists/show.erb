@@ -1,0 +1,24 @@
+<%=flash[:notice]%>
+
+<h2><%=@list.category%></h2>
+<ol>
+<% @tasks.each do |task|%>
+  <li><%=task.name%></li>
+
+  <%=check_box_tag 'completed',nil, task.completed %>
+
+  <%=button_to 'Edit', edit_task_path(id: task.id), method: :get%>
+  <%=button_to 'Delete', task, method: :delete%>
+<%end%>
+</ol>
+
+<h4> Create a New Task </h4>
+
+<%= form_for @task do |f|%>
+  <%= f.hidden_field :list_id, value: "#{@id}" %>
+  <%=f.label "name" %>
+  <%=f.text_field :name %>
+  <%=f.submit "Create" %>
+<% end %>
+
+

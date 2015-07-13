@@ -1,0 +1,7 @@
+<h2>Edit your task!</h2>
+
+<%=form_for @task do |f|%>
+  <%=f.label "name"%>
+  <%=f.text_field :name%>
+  <%=f.submit "Edit"%>
+<%end%>
