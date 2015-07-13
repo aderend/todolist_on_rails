@@ -7,9 +7,12 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      redirect_to list_path(id: params[:task][:list_id])
+      flash[:notice] = "Task created"
+      redirect_to list_path(id: @task.list_id)
     else
-      redirect_to new_task_path
+      flash[:notice] = "Please enter a task name"
+      redirect_to list_path(id: @task.list_id)
+      # redirect_to root_path, flash: { error: "wtf mate?" }
     end
   end
 

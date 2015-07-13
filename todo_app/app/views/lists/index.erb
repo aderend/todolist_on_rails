@@ -1,3 +1,5 @@
+<%= flash[:notice] %>
+
 <h3> Welcome to the ToDo app! </h3>
 
 <% @lists.each do |list| %>
@@ -7,3 +9,5 @@
   <%=button_to 'Delete', list, method: :delete%>
   <br><br>
 <%end%>
+
+<%=button_to 'New List', new_list_path, method: :get%>

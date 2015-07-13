@@ -19,7 +19,7 @@ class ListsController < ApplicationController
 
   def show
     @list = List.find_by_id(params[:id])
-    @tasks = @list.tasks
+    @tasks = @list.tasks.order("created_at asc")
     @task = Task.new
     @id = params[:id]
   end
