@@ -1,10 +1,11 @@
-<h2> Create a New List! </h2>
+<h2> Edit Your List! </h2>
 
 <%= form_for @list do |f| %>
-  <%=f.label "Category"%>
+  <%=f.label "Category" %>
   <%=f.text_field :category %>
+  <%=f.label 'Created_by' %>
   <%=f.text_field :created_by %>
-  <%=f.submit "Create" %>
+  <%=f.submit "Update List" %>
 <% end %>
 
 

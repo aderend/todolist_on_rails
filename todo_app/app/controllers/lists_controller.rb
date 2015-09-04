@@ -30,7 +30,7 @@ class ListsController < ApplicationController
 
   def update
      @list = List.find_by(id: params[:id])
-     @list.update(user_params)
+     @list.update(list_params)
      redirect_to lists_path
   end
 
@@ -39,8 +39,6 @@ class ListsController < ApplicationController
     @list.destroy
     redirect_to lists_path
   end
-
-
 
   private
 

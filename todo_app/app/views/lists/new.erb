@@ -3,6 +3,7 @@
 <%= form_for @list do |f| %>
   <%=f.label "Category" %>
   <%=f.text_field :category %>
+  <%=f.label 'Created_by' %>
   <%=f.text_field :created_by %>
   <%=f.submit "Create" %>
 <% end %>
