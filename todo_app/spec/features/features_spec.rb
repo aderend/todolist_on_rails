@@ -7,7 +7,7 @@ feature 'list management' do
 
   scenario "user can see list of lists on index page" do
     visit "/"
-    expect(page).to have_content(sample_list.category.capitalize)
+    expect(page).to have_content(sample_list.category)
   end
 
   scenario "each list has an edit button that redirects" do
@@ -25,21 +25,30 @@ feature 'list management' do
   end
 
   scenario "editing a list saves successfully" do
+    visit "/"
+    click_button('Edit')
+    new_category = Faker::Lorem.word
+    new_created_by = Faker::Name.name
+    fill_in("list_category", with: new_category)
+    fill_in("list_created_by", with: new_created_by)
+    click_button('Update List')
+    expect(page).to have_content(new_category)
+    expect(page).to have_content(new_created_by)
     save_and_open_page
   end
 
-  scenario "each list has a delete button that removes the list" do
-  end
+  # scenario "each list has a delete button that removes the list" do
+  # end
 
-  scenario "clicking on new list button redirects to new list form" do
-  end
+  # scenario "clicking on new list button redirects to new list form" do
+  # end
 
-  scenario "filling out new list form saves successfully" do
-  end
+  # scenario "filling out new list form saves successfully" do
+  # end
 
   scenario "clicking on list name takes you list page" do
     visit "/"
-    click_link(sample_list.category.capitalize)
+    click_link(sample_list.category)
     expect(page).to have_content(sample_list.category)
     expect(page).to have_content(sample_task.name)
   end

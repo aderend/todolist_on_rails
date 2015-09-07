@@ -3,8 +3,8 @@
 <h3> Welcome to the ToDo app! </h3>
 
 <% @lists.each do |list| %>
-  <%=link_to list.category.capitalize, list_path(id: list.id) %><br>
-  <%= list.created_by.capitalize %>
+  <%=link_to list.category, list_path(id: list.id) %><br>
+  <%= list.created_by %>
   <%=button_to 'Edit', edit_list_path(list), method: :get%>
   <%=button_to 'Delete', list, method: :delete%>
   <br><br>
