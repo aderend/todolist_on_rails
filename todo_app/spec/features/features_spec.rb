@@ -10,12 +10,41 @@ feature 'list management' do
     expect(page).to have_content(sample_list.category.capitalize)
   end
 
+  scenario "each list has an edit button that redirects" do
+    visit "/"
+    click_button('Edit')
+  end
+
+  scenario "edit list page has category and created_by fields filled out" do
+    visit "/"
+    click_button('Edit')
+    category_field = find_field("list_category").value
+    created_by_field = find_field("list_created_by").value
+    expect(category_field).to have_content(sample_list.category)
+    expect(created_by_field).to have_content(sample_list.created_by)
+  end
+
+  scenario "editing a list saves successfully" do
+    save_and_open_page
+  end
+
+  scenario "each list has a delete button that removes the list" do
+  end
+
+  scenario "clicking on new list button redirects to new list form" do
+  end
+
+  scenario "filling out new list form saves successfully" do
+  end
+
   scenario "clicking on list name takes you list page" do
     visit "/"
     click_link(sample_list.category.capitalize)
-    save_and_open_page
     expect(page).to have_content(sample_list.category)
     expect(page).to have_content(sample_task.name)
   end
 
+end
+
+feature 'task management' do
 end
