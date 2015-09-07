@@ -63,12 +63,29 @@ require 'rails_helper'
         list.tasks << [task2, task1]
         get :show, id: list.id
         expect(response).to render_template('show')
-
       end
     end
 
+    describe '#edit' do
+      it 'renders the edit page' do
+        list = FactoryGirl.create(:list)
+        task1 = FactoryGirl.create(:task)
+        task2 = FactoryGirl.create(:task)
+        list.tasks << [task2, task1]
+        get :edit, id: list.id
+        expect(response).to render_template('edit')
+      end
 
-
+      it 'edits a list' do
+        list = FactoryGirl.create(:list)
+        task1 = FactoryGirl.create(:task)
+        task2 = FactoryGirl.create(:task)
+        list.tasks << [task2, task1]
+        list_attributes = FactoryGirl.attributes_for(:list)
+        put :update, id: list.id, list: list_attributes
+        expect(list.category).to eq(list_attributes[:category])
+      end
+    end
 
 
   end
