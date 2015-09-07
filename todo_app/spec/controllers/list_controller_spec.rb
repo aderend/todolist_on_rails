@@ -105,5 +105,12 @@ require 'rails_helper'
       end
     end
 
+    describe '#destroy' do
+      it 'deletes a list' do
+        create_list
+        expect{delete :destroy, id: @list.id}.to change(List, :count)
+      end
+    end
+
 
   end
