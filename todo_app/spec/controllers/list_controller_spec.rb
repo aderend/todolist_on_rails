@@ -7,6 +7,18 @@ require 'rails_helper'
 
     FactoryGirl.lint(factories_to_lint)
 
+    def create_list
+      @list = FactoryGirl.create(:list)
+      @list_attributes = @list.attributes
+    end
+
+    def create_lists_and_tasks
+      @list = FactoryGirl.create(:list)
+      task1 = FactoryGirl.create(:task)
+      task2 = FactoryGirl.create(:task)
+      @list.tasks << [task2, task1]
+    end
+
     describe '#index' do
       it 'shows all the lists' do
         get :index
@@ -34,17 +46,15 @@ require 'rails_helper'
     describe '#create' do
 
       it 'creates a new list object' do
-        list = FactoryGirl.create(:list)
-        list_attributes = list.attributes
-        post :create, list: list_attributes
-        expect(List.last.category).to eq(list.category)
-        expect(List.last.created_by).to eq(list.created_by)
+        create_list
+        post :create, list: @list_attributes
+        expect(List.last.category).to eq(@list.category)
+        expect(List.last.created_by).to eq(@list.created_by)
       end
 
       it 'redirects to route after creating' do
-        list = FactoryGirl.create(:list)
-        list_attributes = list.attributes
-        post :create, list: list_attributes
+        create_list
+        post :create, list: @list_attributes
         expect(response).to redirect_to lists_path
       end
 
@@ -56,43 +66,39 @@ require 'rails_helper'
     end
 
     describe '#show' do
-      it 'It shows a lists and its tasks' do
-        list = FactoryGirl.create(:list)
-        task1 = FactoryGirl.create(:task)
-        task2 = FactoryGirl.create(:task)
-        list.tasks << [task2, task1]
-        get :show, id: list.id
+      it 'shows a lists and its tasks' do
+        create_lists_and_tasks
+        get :show, id: @list.id
         expect(response).to render_template('show')
       end
     end
 
-    describe '#edit, #update' do
-
-      before(:each) do
-        @list = FactoryGirl.create(:list)
-        task1 = FactoryGirl.create(:task)
-        task2 = FactoryGirl.create(:task)
-        @list.tasks << [task2, task1]
-      end
-
+    describe '#edit' do
       it 'renders the edit page' do
+        create_lists_and_tasks
         get :edit, id: @list.id
         expect(response).to render_template('edit')
       end
+    end
+
+    describe '#update' do
 
       it 'edits a list with valid parameters' do
+        create_lists_and_tasks
         list_attributes = FactoryGirl.attributes_for(:list)
         put :update, id: @list.id, list: list_attributes
         expect(@list.category).to eq(list_attributes[:category])
       end
 
       it 'redirects to list index page after successful update' do
+        create_lists_and_tasks
         list_attributes = FactoryGirl.attributes_for(:list)
         put :update, id:@list.id, list: list_attributes
         expect(response).to redirect_to(lists_path)
       end
 
       it 'edits a list with invalid parameters' do
+        create_lists_and_tasks
         list_attributes = FactoryGirl.attributes_for(:invalid_list)
         put :update, id: @list.id, list: list_attributes
         expect(response).to redirect_to(edit_list_path(@list))
