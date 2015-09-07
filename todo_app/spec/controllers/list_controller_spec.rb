@@ -53,8 +53,20 @@ require 'rails_helper'
         post :create, list: list_attributes
         expect(response).to redirect_to new_list_path
       end
-
     end
+
+    describe '#show' do
+      it 'It shows a lists and its tasks' do
+        list = FactoryGirl.create(:list)
+        task1 = FactoryGirl.create(:task)
+        task2 = FactoryGirl.create(:task)
+        list.tasks << [task2, task1]
+        get :show, id: list.id
+        expect(response).to render_template('show')
+
+      end
+    end
+
 
 
 
