@@ -8,6 +8,7 @@ feature 'list management' do
   scenario "user can see list of lists on index page" do
     visit "/"
     expect(page).to have_content(sample_list.category)
+    expect(page).to have_content(sample_list.created_by)
   end
 
   scenario "each list has an edit button that redirects" do
@@ -34,11 +35,15 @@ feature 'list management' do
     click_button('Update List')
     expect(page).to have_content(new_category)
     expect(page).to have_content(new_created_by)
-    save_and_open_page
   end
 
-  # scenario "each list has a delete button that removes the list" do
-  # end
+  scenario "each list has a delete button that removes the list" do
+    visit "/"
+    click_button('Delete')
+    expect(page).to_not have_content(sample_list.category)
+    expect(page).to_not have_content(sample_list.created_by)
+    save_and_open_page
+  end
 
   # scenario "clicking on new list button redirects to new list form" do
   # end
