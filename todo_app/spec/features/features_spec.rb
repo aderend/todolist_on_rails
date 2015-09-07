@@ -49,11 +49,7 @@ feature 'list management' do
     click_button("Create")
     expect(page).to have_content(new_category)
     expect(page).to have_content(new_created_by)
-    save_and_open_page
   end
-
-  # scenario "filling out new list form saves successfully" do
-  # end
 
   scenario "clicking on list name takes you list page" do
     visit "/"
