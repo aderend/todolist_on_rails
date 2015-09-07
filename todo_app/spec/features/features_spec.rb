@@ -11,11 +11,6 @@ feature 'list management' do
     expect(page).to have_content(sample_list.created_by)
   end
 
-  scenario "each list has an edit button that redirects" do
-    visit "/"
-    click_button('Edit')
-  end
-
   scenario "edit list page has category and created_by fields filled out" do
     visit "/"
     click_button('Edit')
@@ -42,11 +37,20 @@ feature 'list management' do
     click_button('Delete')
     expect(page).to_not have_content(sample_list.category)
     expect(page).to_not have_content(sample_list.created_by)
-    save_and_open_page
   end
 
-  # scenario "clicking on new list button redirects to new list form" do
-  # end
+  scenario "creating a new list saves and redirects to index page" do
+    visit "/"
+    click_button('New List')
+    new_category = Faker::Lorem.word
+    new_created_by = Faker::Name.name
+    fill_in("list_category", with: new_category)
+    fill_in("list_created_by", with: new_created_by)
+    click_button("Create")
+    expect(page).to have_content(new_category)
+    expect(page).to have_content(new_created_by)
+    save_and_open_page
+  end
 
   # scenario "filling out new list form saves successfully" do
   # end
