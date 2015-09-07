@@ -32,6 +32,7 @@ require 'rails_helper'
     end
 
     describe '#create' do
+
       it 'creates a new list object' do
         list = FactoryGirl.create(:list)
         list_attributes = list.attributes
@@ -48,7 +49,6 @@ require 'rails_helper'
       end
 
       it 'reloads the page after failing to create' do
-        # list = FactoryGirl.create(:invalid_list)
         list_attributes = FactoryGirl.attributes_for(:invalid_list)
         post :create, list: list_attributes
         expect(response).to redirect_to new_list_path
@@ -66,24 +66,36 @@ require 'rails_helper'
       end
     end
 
-    describe '#edit' do
-      it 'renders the edit page' do
-        list = FactoryGirl.create(:list)
+    describe '#edit, #update' do
+
+      before(:each) do
+        @list = FactoryGirl.create(:list)
         task1 = FactoryGirl.create(:task)
         task2 = FactoryGirl.create(:task)
-        list.tasks << [task2, task1]
-        get :edit, id: list.id
+        @list.tasks << [task2, task1]
+      end
+
+      it 'renders the edit page' do
+        get :edit, id: @list.id
         expect(response).to render_template('edit')
       end
 
-      it 'edits a list' do
-        list = FactoryGirl.create(:list)
-        task1 = FactoryGirl.create(:task)
-        task2 = FactoryGirl.create(:task)
-        list.tasks << [task2, task1]
+      it 'edits a list with valid parameters' do
         list_attributes = FactoryGirl.attributes_for(:list)
-        put :update, id: list.id, list: list_attributes
-        expect(list.category).to eq(list_attributes[:category])
+        put :update, id: @list.id, list: list_attributes
+        expect(@list.category).to eq(list_attributes[:category])
+      end
+
+      it 'redirects to list index page after successful update' do
+        list_attributes = FactoryGirl.attributes_for(:list)
+        put :update, id:@list.id, list: list_attributes
+        expect(response).to redirect_to(lists_path)
+      end
+
+      it 'edits a list with invalid parameters' do
+        list_attributes = FactoryGirl.attributes_for(:invalid_list)
+        put :update, id: @list.id, list: list_attributes
+        expect(response).to redirect_to(edit_list_path(@list))
       end
     end
 

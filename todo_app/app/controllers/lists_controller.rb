@@ -29,9 +29,13 @@ class ListsController < ApplicationController
   end
 
   def update
-     @list = List.find_by(id: params[:id])
-     @list.update(list_params)
-     redirect_to lists_path
+   @list = List.find_by(id: params[:id])
+   @list.attributes=list_params
+   if @list.save
+    redirect_to lists_path
+   else
+    redirect_to edit_list_path(@list)
+   end
   end
 
   def destroy
